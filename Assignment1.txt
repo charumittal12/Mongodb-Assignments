@@ -1,0 +1,118 @@
+PS C:\Users\CHARU\Desktop\mern-stack\learning\backend\Mongo-db> mongosh
+Current Mongosh Log ID: 6729d77bef6dc0487d0d818f
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.3      
+Using MongoDB:          8.0.3
+Using Mongosh:          2.3.3
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+
+------
+   The server generated these startup warnings when booting      
+   2024-11-04T14:44:08.967+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+test> use university1
+switched to db university1
+university1> db.students.insertOne({
+... name: "John Doe",
+... age: 20,
+... grade: "B"
+... });
+{
+  acknowledged: true,
+  insertedId: ObjectId('6729d7f4ef6dc0487d0d8190')
+}
+university1> db.students.find()
+[
+  {
+    _id: ObjectId('6729d7f4ef6dc0487d0d8190'),
+    name: 'John Doe',
+    age: 20,
+    grade: 'B'
+  }
+]
+university1> db.students.find({age:{$gt:18} })
+[
+  {
+    _id: ObjectId('6729d7f4ef6dc0487d0d8190'),
+    name: 'John Doe',
+    age: 20,
+    grade: 'B'
+  }
+]
+university1> db.students.updateOne(
+... {name:"John",
+... { $set: {grade:"A"} }                                        
+Uncaught:
+SyntaxError: Unexpected token (3:0)
+
+  1 | db.students.updateOne(
+  2 | {name:"John",
+> 3 | { $set: {grade:"A"} }
+    | ^
+  4 |
+
+university1> db.students.updateOne( {name:"John", { $set: {grade:"A"} } )
+Uncaught:
+SyntaxError: Unexpected token (1:37)
+
+> 1 | db.students.updateOne( {name:"John", { $set: {grade:"A"} } )
+    |                                      ^
+  2 |
+
+university1> db.students.updateOne( {name:"John"}, { $set: {grade:"A"} }
+... )                                                            
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+university1> db.students.insertOne({ name: "emily", age: 20, grade: "B" });
+{
+  acknowledged: true,
+  insertedId: ObjectId('6729d8c6ef6dc0487d0d8191')
+}
+university1> dbs.find()
+ReferenceError: dbs is not defined
+university1> db.students.find()
+[
+  {
+    _id: ObjectId('6729d7f4ef6dc0487d0d8190'),
+    name: 'John Doe',
+    age: 20,
+    grade: 'B'
+  },
+  {
+    _id: ObjectId('6729d8c6ef6dc0487d0d8191'),
+    name: 'emily',
+    age: 20,
+    grade: 'B'
+  }
+]
+university1> db.students.deleteOne({name : "emily"})
+{ acknowledged: true, deletedCount: 1 }
+university1> db.students.find()
+[
+  {
+    _id: ObjectId('6729d7f4ef6dc0487d0d8190'),
+    name: 'John Doe',
+    age: 20,
+    grade: 'B'
+  }
+]
+university1> db.students.countDocuments({ grade: "B"})
+1
+university1> db.students.find({},{ name : 1,grade:1,_id: 0})
+[ { name: 'John Doe', grade: 'B' } ]
+university1> db.students.find().sort({age: -1})
+[
+  {
+    _id: ObjectId('6729d7f4ef6dc0487d0d8190'),
+    name: 'John Doe',
+    age: 20,
+    grade: 'B'
+  }
+]
